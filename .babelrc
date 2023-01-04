@@ -1,0 +1,4 @@
+// babel configuration file - .babelrc (https://www.npmjs.com/package/babel-plugin-transform-remove-console)
+{
+    // "plugins": [ ["transform-remove-console", { "exclude": [ "error", "warn"] }] ] commenting it for now as we need console.log.
+}
