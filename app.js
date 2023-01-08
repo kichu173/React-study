@@ -1,55 +1,868 @@
-import React from "react"; // getting it from my node_modules
+import React from "react";
 import ReactDOM from "react-dom/client";
 
-// PURE REACT
-const heading1 = React.createElement(
-  "h1", // h1 => we call this as a react element.
-  {
-    id: "title", // <h1 id="title" key="h1">Namaste Everyone from React!</h1>
-    key: "h1"
-  },
-  "Namaste Everyone from React!"
-); // 'React' is a global variable which comes from the injected cdn js files. 'createElement' take three arguments - 1.element/tag we need to create, 2.empty object - takes props/html attributes(it can take anything here and will show up in dom, ex: hello:"world"), 3.text content/children to be displayed/inserted.
-console.log('heading using react.createElement',heading1); // react element is a plain JS object
+/**
+ * 
+ * Build our app(Food Website - Food Villa) - Never ever code without planning.
+ *  
+ * Header
+ *  - Logo(Title)
+ *  - Nav Item Links(Right side)
+ *  - Cart
+ * Body
+ *  - Search bar
+ *  - RestaurantList
+ *    - RestaurantCard (many cards)
+ *      - Image
+ *      - Name
+ *      - Rating
+ *      - Cuisines
+ * Footer
+ *  - Reference links
+ *  - copyright
+ * 
+ * */
 
-// ! React.createElement => Object => HTML(DOM)
-// Suppose we have to construct big HTML structure, we use JSX(Javascript XML) instead React.createElement(.....) -> which creates more mess writing big html structure.
-// Motivation behind bringing JSX => write whole html inside javascript.
+const Title = () => (
+  <a href="/">
+    <img
+      className="logo"
+      alt="logo"
+      src="https://yt3.ggpht.com/ytc/AMLnZu_EC-ECXAxRAixWGEfMsE1rdSoetBHyxmLNdtCB=s900-c-k-c0x00ffffff-no-rj"
+    />
+  </a>
+);
 
-// using JSX for creating h1 tag
-// * JSX is html like syntax, and not html inside javascript.
-// Facebook developers built JSX.
-// heading variable below is called as react element here. React element is nothing but an object at the end of day.
-const heading = (
-  <h1 id="title" key="h1" tabIndex="1">
-    Namaste Everyone from React JSX!
-  </h1>
-);// use parenthesis for writing in multiple lines. JSX expression -> code wrapped in parenthesis is called as.
-console.log('heading using JSX', heading);
-
-// How JSX is executed? - Babel(reads code line by line) understands JSX and produces output code which browser understands and executes it.
-// ! JSX uses React.createElement behind the scenes, JSX => React.createElement => Object => HTML(DOM). Babel converts the JSX to React.createElement like code.
-
-// React component(Everything inside a react is a component)
-// Two types of components in React
-// - Functional component (new way of write code)
-// - Class Based Component (old way of writing code)
-
-// Functional Component - Functional component is nothing but a JS function that returns JSX/ React.createElement(piece of react element).
-// Name of component starts with capital letter. (Not mandatory but a good practice)
 const HeaderComponent = function () {
-  // return <h1>Namaste React Functional Component</h1>; // if you have single line you can write like this without parenthesis.
-  return ( // * to use react element inside a functional component we use {heading}, if we want to use functional component inside a functional component we use <Title /> -> component composition/composing component (or) {Title()}. Inside JSX '{..}' you can write any piece of JS code inside the object syntax.
-    <div>
-      {heading} 
-      <h2>Namaste React Functional Component</h2>
-      <h2>This is a H2 tag</h2>
+  return ( // <Title></Title> is another way to put our functional component inside a component. But most used way and preferred is <Title/> (self-closing tag)
+    <div className="header">
+      <Title/>
+      <div className="nav-items">
+        <ul>
+          <li>Home</li>
+          <li>About</li>
+          <li>Contact</li>
+          <li>Cart</li>
+        </ul>
+      </div>
     </div>
   );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root")); // This is the place(id="root") where we have to run our react. Specify which is the root element inside our app to react. In app we do not have multiple roots, one root where we inject react inside and one render method.
-// passing a react element inside the root
-// When you have to render react element you have to write like this, root.render(heading);
-// When we have to render react functional component, you should do like below(angel brackets)
-root.render(<HeaderComponent />); // put our variable heading/container inside the root variable (dom manipulation - render, react will override whatever there existing inside root id).
+// Config Driven UI - all this UI(swiggy) is driven by config which is sent by backend.(1:38:00)
+// - Backend/API controls what type of website/offers to look in chennai/pune/mumbai,...
+
+const restaurantList = [
+  {
+    type: "restaurant",
+    data: {
+      type: "F",
+      id: "73011",
+      name: "KFC",
+      uuid: "27ff4155-fe46-418e-9862-ab98953bf953",
+      city: "22",
+      area: "Anand Vihar Colony",
+      totalRatingsString: "5000+ ratings",
+      cloudinaryImageId: "bdcd233971b7c81bf77e1fa4471280eb",
+      cuisines: ["American", "Snacks", "Biryani"],
+      tags: [],
+      costForTwo: 30000,
+      costForTwoString: "₹300 FOR TWO",
+      deliveryTime: 31,
+      minDeliveryTime: 31,
+      maxDeliveryTime: 31,
+      slaString: "31 MINS",
+      lastMileTravel: 6.199999809265137,
+      slugs: {
+        restaurant: "kfc-chukkuwala-chukkuwala",
+        city: "dehradun",
+      },
+      cityState: "22",
+      address:
+        "KFC Restaurant, Khasra No 1281/1291, Opp Dr Manish Jain hospital, Chakrata road, Dehradun-248001",
+      locality: "Clock Tower",
+      parentId: 547,
+      unserviceable: false,
+      veg: false,
+      select: false,
+      favorite: false,
+      tradeCampaignHeaders: [],
+      aggregatedDiscountInfo: {
+        header: "50% off",
+        shortDescriptionList: [
+          {
+            meta: "50% off | Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      aggregatedDiscountInfoV2: {
+        header: "50% OFF",
+        shortDescriptionList: [
+          {
+            meta: "Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      ribbon: [
+        {
+          type: "PROMOTED",
+        },
+      ],
+      chain: [],
+      feeDetails: {
+        fees: [],
+        totalFees: 0,
+        message: "",
+        title: "",
+        amount: "",
+        icon: "",
+      },
+      availability: {
+        opened: true,
+        nextOpenMessage: "",
+        nextCloseMessage: "",
+      },
+      longDistanceEnabled: 0,
+      rainMode: "NONE",
+      thirdPartyAddress: false,
+      thirdPartyVendor: "",
+      adTrackingID: "cid=5698075~p=1~eid=00000185-8b09-7c92-0e51-a04b00dc0124",
+      badges: {
+        imageBased: [],
+        textBased: [],
+        textExtendedBadges: [],
+      },
+      lastMileTravelString: "6.1 kms",
+      hasSurge: false,
+      sla: {
+        restaurantId: "73011",
+        deliveryTime: 31,
+        minDeliveryTime: 31,
+        maxDeliveryTime: 31,
+        lastMileTravel: 6.199999809265137,
+        lastMileDistance: 0,
+        serviceability: "SERVICEABLE",
+        rainMode: "NONE",
+        longDistance: "NOT_LONG_DISTANCE",
+        preferentialService: false,
+        iconType: "EMPTY",
+      },
+      promoted: true,
+      avgRating: "4.0",
+      totalRatings: 5000,
+      new: false,
+    },
+    subtype: "basic",
+  },
+  {
+    type: "restaurant",
+    data: {
+      type: "F",
+      id: "542132",
+      name: "Domnik Pizza",
+      uuid: "f2ee37f5-9ab0-4903-9420-6cae020b0a38",
+      city: "22",
+      area: "Majra    Bansal Home",
+      totalRatingsString: "50+ ratings",
+      cloudinaryImageId: "sboh9oor0cvp6ztsyhvj",
+      cuisines: ["Pizzas", "Italian", "Fast Food", "Snacks", "Beverages"],
+      tags: [],
+      costForTwo: 30000,
+      costForTwoString: "₹300 FOR TWO",
+      deliveryTime: 33,
+      minDeliveryTime: 33,
+      maxDeliveryTime: 33,
+      slaString: "33 MINS",
+      lastMileTravel: 0.6000000238418579,
+      slugs: {
+        restaurant: "domnik-pizza-patel-nagar-patel-nagar-2",
+        city: "dehradun",
+      },
+      cityState: "22",
+      address:
+        "28/3 Sewala Chandravani Road, Arcedia Grant, Dehradun Rural, Dehradun, Uttarakhand",
+      locality: "Patel Nagar",
+      parentId: 22321,
+      unserviceable: false,
+      veg: false,
+      select: false,
+      favorite: false,
+      tradeCampaignHeaders: [],
+      aggregatedDiscountInfo: {
+        header: "50% off",
+        shortDescriptionList: [
+          {
+            meta: "50% off | Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      aggregatedDiscountInfoV2: {
+        header: "50% OFF",
+        shortDescriptionList: [
+          {
+            meta: "Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      chain: [],
+      feeDetails: {
+        fees: [],
+        totalFees: 0,
+        message: "",
+        title: "",
+        amount: "",
+        icon: "",
+      },
+      availability: {
+        opened: true,
+        nextOpenMessage: "",
+        nextCloseMessage: "",
+      },
+      longDistanceEnabled: 0,
+      rainMode: "NONE",
+      thirdPartyAddress: false,
+      thirdPartyVendor: "",
+      adTrackingID: "",
+      badges: {
+        imageBased: [],
+        textBased: [],
+        textExtendedBadges: [],
+      },
+      lastMileTravelString: "0.6 kms",
+      hasSurge: false,
+      sla: {
+        restaurantId: "542132",
+        deliveryTime: 33,
+        minDeliveryTime: 33,
+        maxDeliveryTime: 33,
+        lastMileTravel: 0.6000000238418579,
+        lastMileDistance: 0,
+        serviceability: "SERVICEABLE",
+        rainMode: "NONE",
+        longDistance: "NOT_LONG_DISTANCE",
+        preferentialService: false,
+        iconType: "EMPTY",
+      },
+      promoted: false,
+      avgRating: "3.8",
+      totalRatings: 50,
+      new: false,
+    },
+    subtype: "basic",
+  },
+  {
+    type: "restaurant",
+    data: {
+      type: "F",
+      id: "321517",
+      name: "FOOD PLANET RESTAURANT",
+      uuid: "899d5dd4-200a-48b2-a321-391bb9486ec2",
+      city: "22",
+      area: "Majra",
+      totalRatingsString: "50+ ratings",
+      cloudinaryImageId: "ykboewqeoxnne8fgrnui",
+      cuisines: ["Indian", "Chinese", "Tandoor", "Thalis", "Fast Food"],
+      tags: [],
+      costForTwo: 20000,
+      costForTwoString: "₹200 FOR TWO",
+      deliveryTime: 25,
+      minDeliveryTime: 25,
+      maxDeliveryTime: 25,
+      slaString: "25 MINS",
+      lastMileTravel: 0.699999988079071,
+      slugs: {
+        restaurant: "food-planet-restaurant-patel-nagar-patel-nagar",
+        city: "dehradun",
+      },
+      cityState: "22",
+      address:
+        "157/11, Chandra Parisar Chandra Bani Rd, Ekta Enclave, Doon Enclave, Majra, Dehradun, Uttarakhand 248171",
+      locality: "Patel Nagar",
+      parentId: 81850,
+      unserviceable: false,
+      veg: false,
+      select: false,
+      favorite: false,
+      tradeCampaignHeaders: [],
+      aggregatedDiscountInfo: {
+        header: "50% off",
+        shortDescriptionList: [
+          {
+            meta: "50% off | Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      aggregatedDiscountInfoV2: {
+        header: "50% OFF",
+        shortDescriptionList: [
+          {
+            meta: "Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      chain: [],
+      feeDetails: {
+        fees: [],
+        totalFees: 0,
+        message: "",
+        title: "",
+        amount: "",
+        icon: "",
+      },
+      availability: {
+        opened: true,
+        nextOpenMessage: "",
+        nextCloseMessage: "",
+      },
+      longDistanceEnabled: 0,
+      rainMode: "NONE",
+      thirdPartyAddress: false,
+      thirdPartyVendor: "",
+      adTrackingID: "",
+      badges: {
+        imageBased: [],
+        textBased: [],
+        textExtendedBadges: [],
+      },
+      lastMileTravelString: "0.6 kms",
+      hasSurge: false,
+      sla: {
+        restaurantId: "321517",
+        deliveryTime: 25,
+        minDeliveryTime: 25,
+        maxDeliveryTime: 25,
+        lastMileTravel: 0.699999988079071,
+        lastMileDistance: 0,
+        serviceability: "SERVICEABLE",
+        rainMode: "NONE",
+        longDistance: "NOT_LONG_DISTANCE",
+        preferentialService: false,
+        iconType: "EMPTY",
+      },
+      promoted: false,
+      avgRating: "2.8",
+      totalRatings: 50,
+      new: false,
+    },
+    subtype: "basic",
+  },
+  {
+    type: "restaurant",
+    data: {
+      type: "F",
+      id: "311806",
+      name: "Burger King",
+      uuid: "162a4dc4-50de-452a-82cf-751e18ac9952",
+      city: "22",
+      area: "Anand Vihar Colony",
+      totalRatingsString: "5000+ ratings",
+      cloudinaryImageId: "iqh7ew5ldfgvpd5dpz60",
+      cuisines: ["Burgers", "American"],
+      tags: [],
+      costForTwo: 35000,
+      costForTwoString: "₹350 FOR TWO",
+      deliveryTime: 39,
+      minDeliveryTime: 39,
+      maxDeliveryTime: 39,
+      slaString: "39 MINS",
+      lastMileTravel: 6.300000190734863,
+      slugs: {
+        restaurant: "burger-king-chakrata-road-ballupur",
+        city: "dehradun",
+      },
+      cityState: "22",
+      address:
+        "5/5,4/4 & 3/3, GROUND FLOOR, CHAKRATA ROAD, DEHRADUN, UTTRAKHAND",
+      locality: "CHAKRATA ROAD",
+      parentId: 166,
+      unserviceable: false,
+      veg: false,
+      select: false,
+      favorite: false,
+      tradeCampaignHeaders: [],
+      aggregatedDiscountInfo: {
+        header: "60% off",
+        shortDescriptionList: [
+          {
+            meta: "60% off | Use STEALDEAL",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "60% off up to ₹120 | Use code STEALDEAL",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      aggregatedDiscountInfoV2: {
+        header: "60% OFF",
+        shortDescriptionList: [
+          {
+            meta: "Use STEALDEAL",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "60% off up to ₹120 | Use code STEALDEAL",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      ribbon: [
+        {
+          type: "PROMOTED",
+        },
+      ],
+      chain: [],
+      feeDetails: {
+        fees: [],
+        totalFees: 0,
+        message: "",
+        title: "",
+        amount: "",
+        icon: "",
+      },
+      availability: {
+        opened: true,
+        nextOpenMessage: "",
+        nextCloseMessage: "",
+      },
+      longDistanceEnabled: 0,
+      rainMode: "NONE",
+      thirdPartyAddress: false,
+      thirdPartyVendor: "",
+      adTrackingID: "cid=5700193~p=4~eid=00000185-8b09-7c92-0e51-a04c00dc0405",
+      badges: {
+        imageBased: [],
+        textBased: [],
+        textExtendedBadges: [],
+      },
+      lastMileTravelString: "6.3 kms",
+      hasSurge: false,
+      sla: {
+        restaurantId: "311806",
+        deliveryTime: 39,
+        minDeliveryTime: 39,
+        maxDeliveryTime: 39,
+        lastMileTravel: 6.300000190734863,
+        lastMileDistance: 0,
+        serviceability: "SERVICEABLE",
+        rainMode: "NONE",
+        longDistance: "NOT_LONG_DISTANCE",
+        preferentialService: false,
+        iconType: "EMPTY",
+      },
+      promoted: true,
+      avgRating: "4.2",
+      totalRatings: 5000,
+      new: false,
+    },
+    subtype: "basic",
+  },
+  {
+    type: "restaurant",
+    data: {
+      type: "F",
+      id: "132460",
+      name: "Annapurna Andhra Mess",
+      uuid: "c6460418-904b-4371-9e04-0ce8b1b46cae",
+      city: "22",
+      area: "Dehradun",
+      totalRatingsString: "1000+ ratings",
+      cloudinaryImageId: "zw4qx2szsy9kbszk9n3d",
+      cuisines: ["South Indian", "Biryani", "North Indian"],
+      tags: [],
+      costForTwo: 20000,
+      costForTwoString: "₹200 FOR TWO",
+      deliveryTime: 25,
+      minDeliveryTime: 25,
+      maxDeliveryTime: 25,
+      slaString: "25 MINS",
+      lastMileTravel: 1.399999976158142,
+      slugs: {
+        restaurant: "annapurna-andhra-mess-subhash-nagar-subhash-nagar",
+        city: "dehradun",
+      },
+      cityState: "22",
+      address:
+        "keshav enclave sewla khurd chandrabani road behind uttranchal PG college",
+      locality: "Patel Nagar",
+      parentId: 33997,
+      unserviceable: false,
+      veg: false,
+      select: false,
+      favorite: false,
+      tradeCampaignHeaders: [],
+      aggregatedDiscountInfo: {
+        header: "50% off",
+        shortDescriptionList: [
+          {
+            meta: "50% off | Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      aggregatedDiscountInfoV2: {
+        header: "50% OFF",
+        shortDescriptionList: [
+          {
+            meta: "Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      chain: [],
+      feeDetails: {
+        fees: [],
+        totalFees: 0,
+        message: "",
+        title: "",
+        amount: "",
+        icon: "",
+      },
+      availability: {
+        opened: true,
+        nextOpenMessage: "",
+        nextCloseMessage: "",
+      },
+      longDistanceEnabled: 0,
+      rainMode: "NONE",
+      thirdPartyAddress: false,
+      thirdPartyVendor: "",
+      adTrackingID: "",
+      badges: {
+        imageBased: [],
+        textBased: [],
+        textExtendedBadges: [],
+      },
+      lastMileTravelString: "1.3 kms",
+      hasSurge: false,
+      sla: {
+        restaurantId: "132460",
+        deliveryTime: 25,
+        minDeliveryTime: 25,
+        maxDeliveryTime: 25,
+        lastMileTravel: 1.399999976158142,
+        lastMileDistance: 0,
+        serviceability: "SERVICEABLE",
+        rainMode: "NONE",
+        longDistance: "NOT_LONG_DISTANCE",
+        preferentialService: false,
+        iconType: "EMPTY",
+      },
+      promoted: false,
+      avgRating: "4.0",
+      totalRatings: 1000,
+      new: false,
+    },
+    subtype: "basic",
+  },
+  {
+    type: "restaurant",
+    data: {
+      type: "F",
+      id: "496677",
+      name: "Uncle Ji Restaurant",
+      uuid: "e652ab57-22c2-4226-b5ea-a5caa26ee0f8",
+      city: "22",
+      area: "Patel Nagar",
+      totalRatingsString: "Too Few Ratings",
+      cloudinaryImageId: "kx2ghnwagcnqjtmd5jbc",
+      cuisines: ["North Indian", "Snacks", "Beverages"],
+      tags: [],
+      costForTwo: 30000,
+      costForTwoString: "₹300 FOR TWO",
+      deliveryTime: 31,
+      minDeliveryTime: 31,
+      maxDeliveryTime: 31,
+      slaString: "31 MINS",
+      lastMileTravel: 0.800000011920929,
+      slugs: {
+        restaurant: "uncle-ji-restaurant-patel-nagar-patel-nagar",
+        city: "dehradun",
+      },
+      cityState: "22",
+      address: "348 santosh tower, majra road gram majra dehradun 248001",
+      locality: "Patel Nagar",
+      parentId: 298209,
+      unserviceable: false,
+      veg: false,
+      select: false,
+      favorite: false,
+      tradeCampaignHeaders: [],
+      aggregatedDiscountInfo: {
+        header: "50% off",
+        shortDescriptionList: [
+          {
+            meta: "50% off | Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      aggregatedDiscountInfoV2: {
+        header: "50% OFF",
+        shortDescriptionList: [
+          {
+            meta: "Use WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        descriptionList: [
+          {
+            meta: "50% off up to ₹100 | Use code WELCOME50",
+            discountType: "Percentage",
+            operationType: "RESTAURANT",
+          },
+        ],
+        subHeader: "",
+        headerType: 0,
+        superFreedel: "",
+      },
+      chain: [],
+      feeDetails: {
+        fees: [],
+        totalFees: 0,
+        message: "",
+        title: "",
+        amount: "",
+        icon: "",
+      },
+      availability: {
+        opened: true,
+        nextOpenMessage: "",
+        nextCloseMessage: "",
+      },
+      longDistanceEnabled: 0,
+      rainMode: "NONE",
+      thirdPartyAddress: false,
+      thirdPartyVendor: "",
+      adTrackingID: "",
+      badges: {
+        imageBased: [],
+        textBased: [],
+        textExtendedBadges: [],
+      },
+      lastMileTravelString: "0.8 kms",
+      hasSurge: false,
+      sla: {
+        restaurantId: "496677",
+        deliveryTime: 31,
+        minDeliveryTime: 31,
+        maxDeliveryTime: 31,
+        lastMileTravel: 0.800000011920929,
+        lastMileDistance: 0,
+        serviceability: "SERVICEABLE",
+        rainMode: "NONE",
+        longDistance: "NOT_LONG_DISTANCE",
+        preferentialService: false,
+        iconType: "EMPTY",
+      },
+      promoted: false,
+      avgRating: "--",
+      totalRatings: 0,
+      new: false,
+    },
+    subtype: "basic",
+  },
+];
+
+// restaurant card - functional component
+// passing dynamic data(restaurantList data).
+// parameter props here is receiving the data sent by Body Components - RestaurantCard props.
+const RestaurantCard = ({ name, cuisines, cloudinaryImageId, lastMileTravelString }) => {
+  return (
+    <div className="card">
+      <img src={"https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/" +
+          cloudinaryImageId}/>
+      <h2>{name}</h2>
+      <h3>{cuisines.join(', ')}</h3>
+      <h4>{lastMileTravelString} minutes</h4>
+    </div>
+  )
+}
+
+// props - properties (passing some data/properties into my component(functional/ class based)) | ex: <RestaurantCard restaurant={restaurantList[0]} /> here props is restaurant={restaurantList[0]}. This is the way of passing data into component(like function arguments and parameters in JS - we will get data passed here).
+// {RestaurantCard(restaurantList[0])} (or) <RestaurantCard restaurant={restaurantList[0]} />
+// you can pass multiple props ex: <RestaurantCard restaurant={restaurantList[0]} hello="world" />
+const Body = () => {
+  return (
+    <div className="restaurant-list">
+      {
+        // you can run any piece of JS code inside {} - curly braces.
+        // * no key (not acceptable)<<<<<<<<<<< index key(last option) <<<<< unique key (best practice).
+        // you can use map or forEach to loop, but map is preferred way and good in performance.
+        restaurantList.map((restaurant) => {
+          return <RestaurantCard {
+            ...restaurant.data
+          }
+          key = {
+            restaurant.data.id
+          }
+          />;
+        })
+      }
+    </div>
+  );
+}
+
+const Footer = () => {
+  return (
+    <h4>footer</h4>
+  )
+}
+
+// * Structure our layout (first thing to do)
+const AppLayout = () => { // AppLayout is a functional component
+  return (// ! Any piece of JSX expression/component that you write can have only one parent element. React.Fragment - is a component which is exported by 'React' which we imported from node_modules.
+    <>
+      <HeaderComponent />
+      <Body />
+      <Footer />
+    </>
+  )
+}
+
+/**
+ * JSX - can have one parent.
+ * <React.Fragment> is the parent element, and it is like an empty tag. If you use `div` as a parent element in place of `React.Fragment` then in dom you will find the that ugly div serving no purpose.To avoid extra piece of div. we use React.Fragment and it will not show up in dom.
+ * <React.Fragment></React.Fragment> or <></> (both syntax are one in the same thing).
+ * You cannot pass any attributes in <></>, to pass style or any attribute you should use `div`.
+ * TODO: Can I use React.Fragment inside React.Fragment -> ?
+ */
+
+// JS object for style and pass it to react jsx for inline styling.
+// const styleObj = {
+//   backgroundColor: "red",
+// }
+
+// Inline styling in react.
+// ? <div style={styleObj}></div> (or) style={{backgroundColor: "red"}} (or) <div className="any-class"></div> -> write in external css for this like .any-class{..}.
+
+// const jsx = (
+//   <React.Fragment>
+//     <h1>JSX</h1>
+//     <h1>Second JSX</h1>
+//   </React.Fragment>
+// )
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<AppLayout />);// root.render(jsx);
