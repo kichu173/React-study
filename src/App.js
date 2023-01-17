@@ -1,44 +1,65 @@
-import React from "react";
+import React, { Children } from "react";
 import ReactDOM from "react-dom/client";
 import HeaderComponent from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
-
-/**
- * 
- * Build our app(Food Website - Food Villa) - Never ever code without planning.
- *  
- * Header
- *  - Logo(Title)
- *  - Nav Item Links(Right side)
- *  - Cart
- * Body
- *  - Search bar
- *  - RestaurantList
- *    - RestaurantCard (many cards)
- *      - Image
- *      - Name
- *      - Rating
- *      - Cuisines
- * Footer
- *  - Reference links
- *  - copyright
- * 
- * */
+import About from "./components/About";
+import Error from "./components/Error";
+// config for router - createBrowserRouter
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"; // react-router-dom is developed by remix not meta developers.(reactrouter.com/en/main)
+import Contact from "./components/Contact";
+import RestaurantMenu from "./components/RestaurantMenu";
 
 // Config Driven UI - all this UI(swiggy) is driven by config which is sent by backend.(1:38:00)
 // - Backend/API controls what type of website/offers(coupons) to look in chennai/pune/mumbai,...
 
 // * Structure our layout (first thing to do)
-const AppLayout = () => { // AppLayout is a functional component
-  return (// ! Any piece of JSX expression/component that you write can have only one parent element. React.Fragment - is a component which is exported by 'React' which we imported from node_modules.
+const AppLayout = () => {
+  // AppLayout is a functional component
+  return (
+    // ! Any piece of JSX expression/component that you write can have only one parent element. React.Fragment - is a component which is exported by 'React' which we imported from node_modules.
     <>
       <HeaderComponent />
-      <Body />
+      {
+        // added these curly braces only to add below comments, you can remove later with curly braces.
+        // outlet(named export - component) - to fill in different pages (filled by children route configuration. Nested routes)
+        // [Header / Footer] to be always there for all pages. Content in outlet should change.
+        // All the childrens will go into outlet according to the route config.
+      }
+      <Outlet />
       <Footer />
     </>
-  )
-}
+  );
+};
+
+const appRouter = createBrowserRouter([
+  // always create below applayout component. We need app layout component defined before we use it here.
+  {
+    path: "/",
+    element: <AppLayout />,
+    errorElement: <Error />, // localhost:1234/xyz
+    children: [
+      // sequence does not matter here.
+      {
+        path: "/",
+        element: <Body />,
+      },
+      {
+        path: "/about",
+        element: <About />, // localhost:1234/about
+      },
+      {
+        path: "/contact",
+        element: <Contact />, // localhost:1234/contact
+      },
+      {
+        // Dynamic routing.
+        path: "/restaurant/:id",
+        element: <RestaurantMenu />,
+      },
+    ],
+  },
+]);
 
 /**
  * JSX - can have one parent.
@@ -65,4 +86,4 @@ const AppLayout = () => { // AppLayout is a functional component
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<AppLayout />);// root.render(jsx);
+root.render(<RouterProvider router={appRouter} />); // root will now render according to the router configuration.
