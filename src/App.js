@@ -9,6 +9,7 @@ import Error from "./components/Error";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"; // react-router-dom is developed by remix not meta developers.(reactrouter.com/en/main)
 import Contact from "./components/Contact";
 import RestaurantMenu from "./components/RestaurantMenu";
+import Profile from "./components/Profile";
 
 // Config Driven UI - all this UI(swiggy) is driven by config which is sent by backend.(1:38:00)
 // - Backend/API controls what type of website/offers(coupons) to look in chennai/pune/mumbai,...
@@ -47,6 +48,13 @@ const appRouter = createBrowserRouter([
       {
         path: "/about",
         element: <About />, // localhost:1234/about
+        children: [
+          // These childrens are rendered inside the outlet. You should create outlet inside parent(which is About component for in this case.).
+          {
+            path: "profile", // relative path -> localhost:1234/about/profile, if you provide as /profile in pah it will consider as localhost:1234/profile.
+            element: <Profile />,
+          },
+        ],
       },
       {
         path: "/contact",
