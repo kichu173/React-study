@@ -3,14 +3,8 @@ import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
-
-function filterData(searchText, restaurantsList) {
-  return restaurantsList.filter(function (restaurant) {
-    return restaurant?.data?.name
-      ?.toLowerCase()
-      .includes(searchText.toLowerCase());
-  });
-}
+import { filterData } from "../utils/helper";
+import useOnline from "../utils/useOnline";
 
 // props - properties (passing some data/properties into my component(functional/ class based)) | ex: <RestaurantCard restaurant={restaurantList[0]} /> here props is restaurant={restaurantList[0]}. This is the way of passing data into component(like function arguments and parameters in JS - we will get data passed here).
 // {RestaurantCard(restaurantList[0])} (or) <RestaurantCard restaurant={restaurantList[0]} />
@@ -43,6 +37,13 @@ const Body = () => {
     console.log("swiggy api:>", json);
     setAllRestaurants(json?.data?.cards[2]?.data?.data?.cards);
     setFilteredRestaurants(json?.data?.cards[2]?.data?.data?.cards);
+  }
+
+  // CUSTOM HOOK
+  const isOnline = useOnline();
+
+  if (!isOnline) {
+    return <h1>🔴 Offline, Please check your internet connection!</h1>;
   }
 
   // ? Conditional Rendering

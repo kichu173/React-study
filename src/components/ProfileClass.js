@@ -39,7 +39,7 @@ class Profile extends React.Component {
     });
   }
 
-  // This lifecyle method will be called after every next render.
+  // This lifecyle method will be called after every next render. If there is no state or props changes, your component does not have updating(Lifecycle diagram) phase.
   componentDidUpdate(prevProps, prevState) {
     // This is similar to useEffect hook depenedency array having a state variable and to execute callback fn in useEffect hook to trigger whenver the dependency state changes.
     if (this.state.count !== prevState.count) {
@@ -53,6 +53,7 @@ class Profile extends React.Component {
   }
 
   // This lifecycle method will be called when component is about to destroy/unmount(Destroy happens when we leave this component and visit some other component/page).
+  // Used for cleanup.
   componentWillUnmount() {
     // example: setIntreval(use it in componenntDidMount) and clearIntreval. (assigning `this` variable to setIntreval(ex: this.timer = setIntreval(...)), because `this` is associated to all functions/methods of this class.)
     // clearIntreval(this.timer);

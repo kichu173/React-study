@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Logo from "../assets/img/foodvilla.png"; // import image from assets folder locally which comes as default export.
 import { Link } from "react-router-dom"; // Link is a React component, in browser elements 'to' will be modified as 'href'.
+import useOnline from "../utils/useOnline";
 
 const loggedInUser = () => {
   // API call to check authentiaction
@@ -16,6 +17,8 @@ const Title = () => (
 const HeaderComponent = function () {
   const title = "Food Villa";
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const isOnline = useOnline();
 
   return (
     // <Title></Title> is another way to put our functional component inside a component. But most used way and preferred is <Title/> (self-closing tag)
@@ -35,8 +38,12 @@ const HeaderComponent = function () {
             <Link to="/contact">Contact</Link>
           </li>
           <li>Cart</li>
+          <li>
+            <Link to="/instamart">Insamart</Link>
+          </li>
         </ul>
       </div>
+      <h1>{isOnline ? "✅" : "🔴"}</h1>
       {isLoggedIn ? (
         <button onClick={() => setIsLoggedIn(false)}>Logout</button>
       ) : (

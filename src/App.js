@@ -1,18 +1,26 @@
-import React, { Children } from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import HeaderComponent from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
-import About from "./components/About";
+// import About from "./components/About"; // imported below in lazy way.
 import Error from "./components/Error";
 // config for router - createBrowserRouter
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom"; // react-router-dom is developed by remix not meta developers.(reactrouter.com/en/main)
 import Contact from "./components/Contact";
 import RestaurantMenu from "./components/RestaurantMenu";
 import Profile from "./components/Profile";
+import Shimmer from "./components/Shimmer";
+// * import Instamart from "./components/Instamart"; // imported below in lazy way.
 
 // Config Driven UI - all this UI(swiggy) is driven by config which is sent by backend.(1:38:00)
 // - Backend/API controls what type of website/offers(coupons) to look in chennai/pune/mumbai,...
+
+// Lazy loading(which comes as named import from react library)/ dynamic import(Instead of writing import statement in above you do lazy import like below)
+// In browser console -> network tab -> switch fetch/XHR to js -> filter (http://localhost:1234/) -> refresh page, click on instamart link -> you will find a new js file(bundle which has instamart code) =>This is called as on demand loading.
+// Suspense -> when you are loading your component on demand, react tries to suspend it. React tries to render component which upon on demand may takes some time to load that extra script file(bundle), react will suspend the loading.<Suspense fallback={}></Suspense> in router configuration.
+const Instamart = lazy(() => import("./components/Instamart"));
+const About = lazy(() => import("./components/About"));
 
 // * Structure our layout (first thing to do)
 const AppLayout = () => {
@@ -47,7 +55,11 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />, // localhost:1234/about
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <About />
+          </Suspense>
+        ), // localhost:1234/about
         children: [
           // These childrens are rendered inside the outlet. You should create outlet inside parent(which is About component for in this case.).
           {
@@ -64,6 +76,14 @@ const appRouter = createBrowserRouter([
         // Dynamic routing.
         path: "/restaurant/:id",
         element: <RestaurantMenu />,
+      },
+      {
+        path: "/instamart",
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <Instamart />
+          </Suspense>
+        ),
       },
     ],
   },

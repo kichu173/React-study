@@ -13,6 +13,7 @@ const Profile = (props) => {
     console.log("useEffect");
     return () => {
       // unmounting phase in functional component(return in useEffect).
+      // cleanup activities.
       // clearInterval(timer)
       console.log(`useEffect return`);
     };
