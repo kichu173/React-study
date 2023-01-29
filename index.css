@@ -1,4 +1,4 @@
-.header {
+/* .header {
     display: flex;
     justify-content: space-between ;
     margin: 10px;
@@ -43,4 +43,9 @@
 
 .menu {
     display: flex;
-}
+} */
+
+/* In css, we need to include only below 3 lines. It is like import inside css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

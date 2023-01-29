@@ -10,7 +10,7 @@ const loggedInUser = () => {
 
 const Title = () => (
   <a href="/">
-    <img className="logo" alt="logo" src={Logo} />
+    <img className="h-28 p-2" alt="logo" src={Logo} />
   </a>
 );
 
@@ -22,28 +22,29 @@ const HeaderComponent = function () {
 
   return (
     // <Title></Title> is another way to put our functional component inside a component. But most used way and preferred is <Title/> (self-closing tag)
-    <div className="header">
+    // if my website crosses the threshold/width of small devices make my header blue.
+    <div className="flex justify-between bg-pink-50 shadow-lg sm:bg-blue-50">
       <Title />
-      <h1>{title}</h1>
+      <h1 className="flex py-10 px-2 font-bold text-xl">{title}</h1>
 
       <div className="nav-items">
-        <ul>
-          <li>
+        <ul className="flex py-10">
+          <li className="px-2">
             <Link to="/">Home</Link>
           </li>
-          <li>
+          <li className="px-2">
             <Link to="/about">About</Link>
           </li>
-          <li>
+          <li className="px-2">
             <Link to="/contact">Contact</Link>
           </li>
-          <li>Cart</li>
-          <li>
-            <Link to="/instamart">Insamart</Link>
+          <li className="px-2">Cart</li>
+          <li className="px-2">
+            <Link to="/instamart">Instamart</Link>
           </li>
         </ul>
       </div>
-      <h1>{isOnline ? "✅" : "🔴"}</h1>
+      <h1 className="flex py-10">{isOnline ? "✅" : "🔴"}</h1>
       {isLoggedIn ? (
         <button onClick={() => setIsLoggedIn(false)}>Logout</button>
       ) : (
