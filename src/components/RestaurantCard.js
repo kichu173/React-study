@@ -1,4 +1,6 @@
 import { IMG_CDN_URL } from "../constants";
+import { useContext } from "react";
+import UserContext from "../utils/UserContext";
 
 // restaurant card - functional component
 // passing dynamic data(restaurantList data).
@@ -9,6 +11,7 @@ const RestaurantCard = ({
   cloudinaryImageId,
   lastMileTravelString,
 }) => {
+  const { user } = useContext(UserContext);
   return (
     // How to precisely provide a css value is with square brackets like below:
     // In network tab, you will find css file which parcel has taken help of postscssrc and written tailwindcss for us.
@@ -17,7 +20,10 @@ const RestaurantCard = ({
       <img src={IMG_CDN_URL + cloudinaryImageId} />
       <h2 className="font-bold text-xl">{name}</h2>
       <h3>{cuisines.join(", ")}</h3>
-      <h4>{lastMileTravelString} minutes</h4>
+      <h4>{lastMileTravelString}</h4>
+      <h5 className="font-bold">
+        {user.name} - {user.email}
+      </h5>
     </div>
   );
 };

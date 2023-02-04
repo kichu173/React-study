@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Logo from "../assets/img/foodvilla.png"; // import image from assets folder locally which comes as default export.
 import { Link } from "react-router-dom"; // Link is a React component, in browser elements 'to' will be modified as 'href'.
 import useOnline from "../utils/useOnline";
+import UserContext from "../utils/UserContext";
 
 const loggedInUser = () => {
   // API call to check authentiaction
@@ -19,6 +20,10 @@ const HeaderComponent = function () {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const isOnline = useOnline();
+
+  // useContext is a hook, and hook is a normal JS function at the end of day.
+  // You can have multiple useContext in app.
+  const { user } = useContext(UserContext);
 
   return (
     // <Title></Title> is another way to put our functional component inside a component. But most used way and preferred is <Title/> (self-closing tag)
@@ -45,6 +50,7 @@ const HeaderComponent = function () {
         </ul>
       </div>
       <h1 className="flex py-10">{isOnline ? "✅" : "🔴"}</h1>
+      <span className="flex py-10 font-bold text-red-900">{user.name}</span>
       {isLoggedIn ? (
         <button onClick={() => setIsLoggedIn(false)}>Logout</button>
       ) : (

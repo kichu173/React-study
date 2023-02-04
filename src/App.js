@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import ReactDOM from "react-dom/client";
 import HeaderComponent from "./components/Header";
 import Body from "./components/Body";
@@ -12,6 +12,7 @@ import RestaurantMenu from "./components/RestaurantMenu";
 import Profile from "./components/Profile";
 import Shimmer from "./components/Shimmer";
 // * import Instamart from "./components/Instamart"; // imported below in lazy way.
+import UserContext from "./utils/UserContext";
 
 // Config Driven UI - all this UI(swiggy) is driven by config which is sent by backend.(1:38:00)
 // - Backend/API controls what type of website/offers(coupons) to look in chennai/pune/mumbai,...
@@ -25,9 +26,22 @@ const About = lazy(() => import("./components/About"));
 // * Structure our layout (first thing to do)
 const AppLayout = () => {
   // AppLayout is a functional component
+
+  const [user, setUser] = useState({
+    name: "Kichu",
+    email: "kichu@gmail.com",
+  });
+
+  // you can modify your userContext using a Provider.
+
   return (
     // ! Any piece of JSX expression/component that you write can have only one parent element. React.Fragment - is a component which is exported by 'React' which we imported from node_modules.
-    <>
+    <UserContext.Provider
+      value={{
+        user: user,
+        setUser: setUser,
+      }}
+    >
       <HeaderComponent />
       {
         // added these curly braces only to add below comments, you can remove later with curly braces.
@@ -37,7 +51,7 @@ const AppLayout = () => {
       }
       <Outlet />
       <Footer />
-    </>
+    </UserContext.Provider>
   );
 };
 

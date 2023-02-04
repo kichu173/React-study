@@ -1,10 +1,11 @@
 import { restaurantList } from "../constants";
 import RestaurantCard from "./RestaurantCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { filterData } from "../utils/helper";
 import useOnline from "../utils/useOnline";
+import UserContext from "../utils/UserContext";
 
 // props - properties (passing some data/properties into my component(functional/ class based)) | ex: <RestaurantCard restaurant={restaurantList[0]} /> here props is restaurant={restaurantList[0]}. This is the way of passing data into component(like function arguments and parameters in JS - we will get data passed here).
 // {RestaurantCard(restaurantList[0])} (or) <RestaurantCard restaurant={restaurantList[0]} />
@@ -19,6 +20,8 @@ const Body = () => {
   const [searchText, setSearchText] = useState(""); // to create state variables in react. useState("takes initial value to put into variable") function returns an array and first element in array is variable name, second variable is the set function to update a variable.
   const [filteredrestaurants, setFilteredRestaurants] = useState([]);
   const [allRestaurants, setAllRestaurants] = useState([]);
+
+  const { user, setUser } = useContext(UserContext);
 
   // useEffect hook takes a callback function. Whenever component re renders(local state variable/Props changes and initial render or first load), then useEffect hook is called after each render with whatever we pass into callback function.
   // second argument to useEffect is dependency array, provide empty dependency array if you dont want to call after every re render of component. This hook will be called after only once on page initial load/render.
@@ -79,6 +82,17 @@ const Body = () => {
         >
           Search
         </button>
+        <input
+          type="text"
+          value={user.name}
+          onChange={(e) => setUser({ ...user, name: e.target.value })}
+        />
+        <input
+          className="ml-3 pl-2"
+          type="text"
+          value={user.email}
+          onChange={(e) => setUser({ ...user, email: e.target.value })}
+        />
       </div>
       <div className="flex flex-wrap">
         {

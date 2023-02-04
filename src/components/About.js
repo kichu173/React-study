@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import ProfileFunctional from "./Profile";
 import ProfileClass from "./ProfileClass";
 import { Component } from "react";
+import UserContext from "../utils/UserContext";
 
 class About extends Component {
   constructor(props) {
@@ -18,6 +19,15 @@ class About extends Component {
     return (
       <div>
         <h1>About Us page</h1>
+        {/* useContext hook in class component, we will use it as a component */}
+        <UserContext.Consumer>
+          {({ user }) => (
+            <h4 className="font-bold text-xl p-10">
+              {user.name} - {user.email}
+            </h4>
+          )}
+        </UserContext.Consumer>
+
         <p> This is the New Learning of React Router🚀</p>
         <Outlet />
         <ProfileFunctional name={"Kichu"} />
