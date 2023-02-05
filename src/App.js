@@ -13,6 +13,9 @@ import Profile from "./components/Profile";
 import Shimmer from "./components/Shimmer";
 // * import Instamart from "./components/Instamart"; // imported below in lazy way.
 import UserContext from "./utils/UserContext";
+import { Provider } from "react-redux";
+import store from "./utils/store";
+import Cart from "./components/Cart";
 
 // Config Driven UI - all this UI(swiggy) is driven by config which is sent by backend.(1:38:00)
 // - Backend/API controls what type of website/offers(coupons) to look in chennai/pune/mumbai,...
@@ -36,22 +39,25 @@ const AppLayout = () => {
 
   return (
     // ! Any piece of JSX expression/component that you write can have only one parent element. React.Fragment - is a component which is exported by 'React' which we imported from node_modules.
-    <UserContext.Provider
-      value={{
-        user: user,
-        setUser: setUser,
-      }}
-    >
-      <HeaderComponent />
-      {
-        // added these curly braces only to add below comments, you can remove later with curly braces.
-        // outlet(named export - component) - to fill in different pages (filled by children route configuration. Nested routes)
-        // [Header / Footer] to be always there for all pages. Content in outlet should change.
-        // All the childrens will go into outlet according to the route config.
-      }
-      <Outlet />
-      <Footer />
-    </UserContext.Provider>
+    // passing store into our react application. props name(key) store is very important(key name should be same).
+    <Provider store={store}>
+      <UserContext.Provider
+        value={{
+          user: user,
+          setUser: setUser,
+        }}
+      >
+        <HeaderComponent />
+        {
+          // added these curly braces only to add below comments, you can remove later with curly braces.
+          // outlet(named export - component) - to fill in different pages (filled by children route configuration. Nested routes)
+          // [Header / Footer] to be always there for all pages. Content in outlet should change.
+          // All the childrens will go into outlet according to the route config.
+        }
+        <Outlet />
+        <Footer />
+      </UserContext.Provider>
+    </Provider>
   );
 };
 
@@ -98,6 +104,10 @@ const appRouter = createBrowserRouter([
             <Instamart />
           </Suspense>
         ),
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
     ],
   },

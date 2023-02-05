@@ -3,6 +3,7 @@ import Logo from "../assets/img/foodvilla.png"; // import image from assets fold
 import { Link } from "react-router-dom"; // Link is a React component, in browser elements 'to' will be modified as 'href'.
 import useOnline from "../utils/useOnline";
 import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 
 const loggedInUser = () => {
   // API call to check authentiaction
@@ -25,6 +26,10 @@ const HeaderComponent = function () {
   // You can have multiple useContext in app.
   const { user } = useContext(UserContext);
 
+  // subscribe to the store, useSelector hook is basically a bridge between the redux and your component.
+  const cartItems = useSelector((store) => store.cart.items);
+  console.log("cartItems - Header component", cartItems);
+
   return (
     // <Title></Title> is another way to put our functional component inside a component. But most used way and preferred is <Title/> (self-closing tag)
     // if my website crosses the threshold/width of small devices make my header blue.
@@ -43,9 +48,11 @@ const HeaderComponent = function () {
           <li className="px-2">
             <Link to="/contact">Contact</Link>
           </li>
-          <li className="px-2">Cart</li>
           <li className="px-2">
             <Link to="/instamart">Instamart</Link>
+          </li>
+          <li className="px-2">
+            <Link to="/cart">Cart - {cartItems.length} items</Link>
           </li>
         </ul>
       </div>
